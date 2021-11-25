@@ -17,12 +17,19 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
     private final ICustomerService customerService = new CustomerService();
-//    @GetMapping xác định phương thức Index sẽ đón nhận các request có HTTP method là GET và URI pattern là "/"
+//    @GetMapping xác định phương thức index sẽ đón nhận các request có HTTP method là GET và URI pattern là "/"
     @GetMapping("")
     public String index(Model model){
         List<Customer> customerList = customerService.findAll();
         model.addAttribute("customers", customerList);
         return "/index";
+    }
+
+    @GetMapping("{id}/view")
+    public String view(@PathVariable int id, Model model){
+        Customer customer = customerService.findById(id);
+        model.addAttribute("customer", customer);
+        return ("/view");
     }
 
     @GetMapping("/create")
@@ -68,6 +75,8 @@ public class CustomerController {
         redirect.addFlashAttribute("success", "Removed customer successfully!");
         return "redirect:/customer";
     }
+
+
 
 
 }
